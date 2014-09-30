@@ -1,3 +1,7 @@
+---
+tags: nsnumber, nsinteger, objects, collections
+languages: objc
+---
 
 # NSNumber v NSInteger
 When we work with integers, we typically use the `NSInteger` datatype.
