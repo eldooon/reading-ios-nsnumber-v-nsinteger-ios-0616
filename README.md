@@ -70,3 +70,6 @@ NSNumber *sum = 2 + @3; // Semantic Issue: Arithmetic on pointer to interface 'N
 NSArray *numbers = @[2, 3]; // Semantic Issue: Numeric literal must be prefixed by '@' in a collection
 NSDictionary *numbers = @{@2: 3}; // Semantic Issue: Numeric literal must be prefixed by '@' in a collection
 ```
+
+####A Note on NSNumber:
+NSNumber is a wrapper that can encapsulate a variety of data types (NSInteger among them). This means we can put float values into an NSNumber, and ints and doubles and any other kind of scalar value.
