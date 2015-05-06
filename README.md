@@ -13,15 +13,11 @@ NSInteger y = 3;
 NSInteger z = x + y; // z = 5
 ```
 
-However, NSInteger has some limitations; *we can't add NSIntegers to NSArrays or
-NSDictionaries as those can only hold objects*. How can we hold numbers in an
-array or a dictionary then? 
+However, NSInteger has some limitations; *we can't add NSIntegers to NSArrays or NSDictionaries as those can only hold objects*. How can we hold numbers in an array or a dictionary then? 
 
-The answer to that is pretty easy. We turn an NSInteger into an NSNumber, which is an
-object. 
+The answer to that is pretty easy. We turn an NSInteger into an NSNumber, which is an object. 
 
-Awesome! So now we can have an array of NSNumbers or a dictionary with
-NSNumbers as keys or values.
+Awesome! So now we can have an array of NSNumbers or a dictionary with NSNumbers as keys or values.
 
 ```objc
 NSInteger x = 2;
@@ -31,8 +27,7 @@ NSNumber *objectY = [NSNumber numberWithInteger:y];
 NSArray *numberArray = @[objectX, objectY]; // [@2, @3]
 ```
 
-Because NSNumbers are objects, we can create them the same way you would create
-any object. Or we can use a convenience method shortcut. Or we can use object literals
+Because NSNumbers are objects, we can create them the same way you would create any object. Or we can use a convenience method shortcut. Or we can use object literals
 .
 
 ```objc
@@ -44,17 +39,17 @@ NSNumber *objectY = [NSNumber numberWithInteger:3];
 
 // object literals
 NSNumber *objectZ = @5;
+NSNumber *objectQ = @(-15);   // You'll need parentheses for negative values...
+NSNumber *objectT = @(5 - 2); // and expressions.
 ```
 
-Now we know how to create NSNumbers. And we know that NSNumbers can be used in
-Objective-C collections like dictionaries and arrays. 
+Now we know how to create NSNumbers. And we know that NSNumbers can be used in Objective-C collections like dictionaries and arrays. 
 
 If NSNumbers are so great, why don't we just use them all the time?
 
 *We can't use them for mathmatical operations, that's why.*
 
-When we want to do math with NSNumbers, we have to use methods to get an
-NSInteger value (in the case of integers).
+When we want to do math with NSNumbers, we have to use methods to get an NSInteger value (in the case of integers).
 
 ```objc
 NSInteger integerX = [@2 integerValue];
