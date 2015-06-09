@@ -11,9 +11,9 @@
 
 You may have noticed in previous examples that `NSString` variables are declared with a `*` ("star" or "asterisk") while `NSInteger` variables are declared without one. This is because `NSString` is an object type (we'll cover in depth what this means in the next topic). Objects require a pointer reference (the `*`) in their declaration because, well, they point to a set of values at a specific memory address in the computer's RAM. However, `NSInteger` is a primitive, or "data type", and is itself a value, rather than a pointer to a value or set of values.
 
-**Note:** *Entering* `NSInteger *` *will cause the compiler to generate an error. The same goes for declaring any of the data types.*
+**Note:** *Entering* `NSInteger *` *will cause the compiler to generate an* `invalid integer to pointer conversion` *warning. The same goes for declaring any of the data types. This syntax does serve a purpose so the language permits it, but your application won't do what you expect.*
 
-While you can reference the complete list, the primitives with which you'll interact the most are:
+While you can reference the complete list of , the primitives with which you'll interact the most are:
 
 ```objc
 NSInteger
@@ -119,15 +119,13 @@ NSInteger negSeven = -7;
 NSUInteger eight = 8;
 CGFloat pi = 3.14159265359;
 BOOL isTrue = YES;
-NSString *age = @"29";
 
 NSNumber *negSevenNumber = @(negSeven);
 NSNumber *eightNumber = @(eight);
 NSNumber *piNumber = @(pi);
 NSNumber *isTrueNumber = @(isTrue);
-NSNumber *ageNumber = @(age);
 
-NSLog(@"%@, %@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isTrueNumber, ageNumber);
+NSLog(@"%@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isTrueNumber);
 ```
 This will print: `-7, 8, 3.1419265359, 1, 29`.
 
