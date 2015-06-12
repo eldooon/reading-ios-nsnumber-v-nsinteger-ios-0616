@@ -76,7 +76,7 @@ It's important to know that integer values **do not** automatically become float
 CGFloat elevenNinths = 11/9;
 NSLog(@"%f", elevenNinths);
 ```
-This will print: `1`.
+This will print: `1.000000`.
 
 But why did it not print `1.222222`? Well, that's because dividing (`/`) integer values can only result in another integer. However, if any part of an arithmetic operation involves a floating point value, the result will evaluate to a floating point value as well.
 
@@ -127,7 +127,7 @@ NSNumber *isTrueNumber = @(isTrue);
 
 NSLog(@"%@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isTrueNumber);
 ```
-This will print: `-7, 8, 3.1419265359, 1, 29`.
+This will print: `-7, 8, 3.1419265359, 1`.
 
 ##### Implicit Literal Syntax
 
