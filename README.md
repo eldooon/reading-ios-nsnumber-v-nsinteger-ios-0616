@@ -13,7 +13,7 @@ You may have noticed in previous examples that `NSString` variables are declared
 
 **Note:** *Entering* `NSInteger *` *will cause the compiler to generate an* `invalid integer to pointer conversion` *warning. The same goes for declaring any of the data types. This syntax does serve a purpose so the language permits it, but your application won't do what you expect.*
 
-While you can reference the complete list of , the primitives with which you'll interact the most are:
+The primitives with which you'll interact the most are:
 
 ```objc
 NSInteger
@@ -32,7 +32,7 @@ These Objective-C types get treated at run time as either 32-bit or 64-bit C dat
 |`NSInteger` | `int` (32-bit)          | `long` (64-bit)   |
 |`NSUInteger`| `unsigned int` (32-bit) | `unsigned long` (64-bit) |
 |`CGFloat`   | `float` (32-bit)        | `double` (64-bit) |
-|`BOOL`      | Typedef: YES = 1, NO = 0 |
+|`BOOL`      | smallest possible unit: | YES = 1, NO = 0 |
 
 ### Signed vs. Unsigned Integers
 
@@ -93,10 +93,10 @@ A **Boolean** (typed `BOOL` in Objective-C) is a true or false (`YES` or `NO`) v
 You can set a `BOOL` value like this:
 
 ```objc
-BOOL isTrue = YES; // bit value 1, or anything non-zero, or non-"nil"
-BOOL isFalse = NO; // bit value 0, exactly zero, or "nil"
+BOOL isYes = YES; // bit value 1, or anything non-zero, or non-"nil"
+BOOL isNo = NO; // bit value 0, exactly zero, or "nil"
 
-NSLog(@"yes = %d, no = %d", isTrue, isFalse);
+NSLog(@"yes = %d, no = %d", isYes, isNo);
 ```
 This will print: `yes = 1, no = 0`.
 
@@ -104,55 +104,56 @@ This will print: `yes = 1, no = 0`.
 
 ## NSNumber
 
-Since Objective-C primitives are **not** objects there are certain things that can't be done with them—namely storing them in sets like arrays and dictionaries (the compiler will complain if you try  this).
+Since Objective-C primitives are **not** objects there are certain things that can't be done with them. Namely, storing them in collections like arrays and dictionaries (the compiler will complain if you try this).
 
-The purpose of `NSNumber` is provide a way to store primitives as objects. It as an object-type "wrapper" that bundles the primitive data so it can be placed into a set. The drawback, however, is that information stored in an `NSNumber` cannot be directly modified, and any information wrapped in an `NSNumber` loses the specificity of its origin type.
+The purpose of `NSNumber` is to provide a way to store primitives as objects. It is an object-type "wrapper" that bundles the primitive data so it can be placed into a collection. The drawback, however, is that a primitive stored in an `NSNumber` cannot be directly modified, and information about the original type of primitive type is lost once it's converted.
 
-For this reason, it's best to only use `NSNumber` for storing primitives in sets.
+For this reason, it's best to only use `NSNumber` for storing primitives in collections.
 
 ### The `NSNumber` Literal
 
-The literal syntax for defining an `NSNumber` is `@()`. Each of the above primitive types can be defined as an `NSNumber` using the literal syntax:
-
-```objc
-NSInteger negSeven = -7;
-NSUInteger eight = 8;
-CGFloat pi = 3.14159265359;
-BOOL isTrue = YES;
-
-NSNumber *negSevenNumber = @(negSeven);
-NSNumber *eightNumber = @(eight);
-NSNumber *piNumber = @(pi);
-NSNumber *isTrueNumber = @(isTrue);
-
-NSLog(@"%@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isTrueNumber);
-```
-This will print: `-7, 8, 3.1419265359, 1`.
-
-##### Implicit Literal Syntax
-
-When an `NSNumber` is defined directly to a value instead of to a variable, the parentheses `(``)` can be omitted. If this is the case, they are said to be "implicit".
+The literal syntax for defining an `NSNumber` is `@()`. However, when an `NSNumber` is defined directly to a value instead of to a variable, the round brackets `(``)` can be omitted. If this is the case, they are said to be "implicit". Most of the time that you'll be defining an `NSNumber`, you can use just the `@` ("at symbol") by itself: 
 
 ```objc
 NSNumber *negSeven = @-7;
 NSNumber *eight = @8;
 NSNumber *pi = @3.14159265359;
-NSNumber *isTrue = @YES;
-NSNumber *isFalse = @NO;
+NSNumber *isYes = @YES;
+NSNumber *isNo = @NO;
 ```
 
-### Inability to Operate
+But, there *are* two cases in which you'll need to use the full literal syntax: (1.) converting an existing variable, and (2.) converting the result of an operation.
 
-If we can't store primitives into sets, then why do we use them at all? Well, it's because `NSNumber` can't do arithmetic.
+#### Converting A Variable
+
+Each of the above `NSNumber` values can be converted from a primitive variable already defined:
 
 ```objc
-NSNumber *sum = @1 + @1;
+NSInteger negSevenInt = -7;
+NSUInteger eightUInt = 8;
+CGFloat piFloat = 3.14159265359;
+BOOL isYesBOOL = YES;
+
+NSNumber *negSeven = @(negSeven);
+NSNumber *eight = @(eight);
+NSNumber *pi = @(pi);
+NSNumber *isYes = @(isYes);
+
+NSLog(@"%@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isYesNumber);
 ```
-This results in a compiler error. However, arithmetic operations **can** be placed within the parenthetical:
+This will print: `-7, 8, 3.1419265359, 1`.
+
+#### Converting An Operation
+
+As we mentioned above, an `NSNumber` can't participate directly in a mathematical operation. However, it *can* directly capture the result of an operation which is wrapped in the literal syntax:
 
 ```objc
 NSNumber *sum = @(1 + 1);
+NSNumber *product = @(piFloat + 1);
+NSNumber *difference = @(eightUInt - negSevenInt);
+NSNumber *quotient = @(1.618 / piFloat);
 ```
+The round brackets can contain an equation of multiple operations, but generally this will make your code difficult to read and we consider it best practice to avoid using `NSNumber` whenever possible, except for storing values in collections.
 
 ### Common Errors
 
@@ -186,9 +187,13 @@ Other than the initializer methods which are generally handled by the literal sy
 
 The `isEqualToNumber:` method works similarly for comparing the equivalence of two `NSNumber`s as the `isEqualToString:` method does for two `NSString`s.
 
-## Unsigning the Negative Sign
+## Extra! Extra!
 
-As a curiosity, let's see what happens when we incorrectly read a negative signed integer as an unsigned integer:
+If you have time, review this oddity that's possible in Objective-C due to the pecularity of primitives and the `NSNumber` wrapper. But don't stress over it if you don't quite understand it—it's only here as a curiosity.
+
+### Unsigning the Negative Sign
+
+Let's see what happens when we incorrectly capture a negative signed integer conversion into an unsigned integer variable and then read it:
 
 ```objc
 NSInteger negOne = -1;
@@ -200,7 +205,7 @@ NSLog(@"%lu", negOneUInt);
 
 This prints: `18 446 744 073 709 551 615` (without spaces). 
 
-That's the 64-bit decimal value of `-1`. We get the same problem if  we use `NSNumber`'s `unsignedIntegerValue` method instead, even if we capture the return with an `NSInteger`.
+That's the 64-bit decimal value of `-1`. We get the same problem if  we call `NSNumber`'s `unsignedIntegerValue` method instead, even if we capture the return with an `NSInteger`.
 
 ```objc
 NSInteger negOne = -1;
@@ -209,6 +214,8 @@ NSInteger negOneInt = [negOneNum unsignedIntegerValue];
     
 NSLog(@"%lu", negOneInt);
 ```
+This also prints: `18 446 744 073 709 551 615` (without spaces). 
+
 Mix-ups like this are pretty rare, but if you see a value at run time in the 18-quintillion range, it's probably just the result of a sign conversion error.
 
 
