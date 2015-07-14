@@ -136,7 +136,7 @@ BOOL isYesBOOL = YES;
 
 NSNumber *negSeven = @(negSeven);
 NSNumber *eight = @(eight);
-NSNumber *pi = @(pi);
+NSNumber *pi = @(piFloat);
 NSNumber *isYes = @(isYes);
 
 NSLog(@"%@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isYesNumber);
