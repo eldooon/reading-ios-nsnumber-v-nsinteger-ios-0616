@@ -139,7 +139,7 @@ NSNumber *eight = @(eight);
 NSNumber *pi = @(piFloat);
 NSNumber *isYes = @(isYes);
 
-NSLog(@"%@, %@, %@, %@", negSevenNumber, eightNumber, piNumber, isYesNumber);
+NSLog(@"%@, %@, %@, %@", negSeven, eight, pi, isYes);
 ```
 This will print: `-7, 8, 3.1419265359, 1`.
 
