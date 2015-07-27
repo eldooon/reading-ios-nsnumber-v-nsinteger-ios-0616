@@ -143,6 +143,27 @@ NSLog(@"%@, %@, %@, %@", negSeven, eight, pi, isYes);
 ```
 This will print: `-7, 8, 3.1419265359, 1`.
 
+#### Conversion Methods
+
+Other than the initializer methods which are generally handled by the literal syntax, the methods on `NSNumber` are primarily conversion methods. The most common ones that you'll use are:
+
+* `integerValue` - converts to an `NSInteger`
+* `floatValue` - converts to a `CGFloat`
+* `boolValue` - converts to a `BOOL`
+* `stringValue` - converts to an `NSString`
+
+We can use the conversion methods to transform our `NSNumber` objects back to primitives that can be manipulated:
+
+```objc
+negSevenInt = [negSeven integerValue];
+eightUInt = [eight unsignedIntegerValue];
+piFloat = [pi floatValue];
+isYesBOOL = [isYes boolValue];
+    
+NSLog(@"%li, %lu, %f, %d", negSevenInt, eightUInt, piFloat, isYesBOOL);
+```
+This will print: `-7, 8, 3.141593, 1`.
+
 #### Converting An Operation
 
 As we mentioned above, an `NSNumber` can't participate directly in a mathematical operation. However, it *can* directly capture the result of an operation which is wrapped in the literal syntax:
@@ -157,16 +178,22 @@ The round brackets can contain an equation of multiple operations, but generally
 
 ### Common Errors
 
-Here are some errors you might encounter when using `NSNumber` incorrectly:
+The compiler should complain if you attempt to use `NSNumber` incorrectly. Here are some errors that you might see—
+
+1) When attempting an operation with two `NSNumber` objects:
 
 ```objc
 NSNumber *sum = @2 + @3;
 // Semantic Issue: Invalid operands to binary expression ('NSNumber *' and 'NSNumber *')
 ```
+2) When attempting an operation with one `NSNumber` object:
+
 ```objc 
 NSNumber *sum = 2 + @3; 
 // Semantic Issue: Arithmetic on pointer to interface 'NSNumber', which is not a constant size for this architecture and platform
 ```
+3) When attempting to insert primitives into a collection, such as an array or a dictionary:
+
 ```objc
 NSArray *numbers = @[2, 3]; 
 // Semantic Issue: Numeric literal must be prefixed by '@' in a collection
@@ -176,16 +203,20 @@ NSDictionary *numbers = @{@2: 3};
 // Semantic Issue: Numeric literal must be prefixed by '@' in a collection
 ```
 
-### Methods
-
-Other than the initializer methods which are generally handled by the literal syntax, the methods on `NSNumber` are primarily conversion methods. The most common ones that you'll use are:
-
-* `integerValue` - converts to an `NSInteger`
-* `floatValue` - converts to a `CGFloat`
-* `boolValue` - converts to a `BOOL`
-* `stringValue` - converts to an `NSString`
+#### Comparing `NSNumber`s
 
 The `isEqualToNumber:` method works similarly for comparing the equivalence of two `NSNumber`s as the `isEqualToString:` method does for two `NSString`s.
+
+```objc
+NSNumber *eight = @8;
+
+if ([eight isEqualToNumber:@8]) {
+    NSLog(@"%@ is equal to 8", eight);
+} else {
+    NSLog(@"%@ is not equal to 8", eight);
+}
+```
+This will print: `8 is equal to 8`.
 
 ## Extra! Extra!
 
