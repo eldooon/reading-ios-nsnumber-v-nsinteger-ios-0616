@@ -134,10 +134,10 @@ NSUInteger eightUInt = 8;
 CGFloat piFloat = 3.14159265359;
 BOOL isYesBOOL = YES;
 
-NSNumber *negSeven = @(negSeven);
-NSNumber *eight = @(eight);
+NSNumber *negSeven = @(negSevenInt);
+NSNumber *eight = @(eightUInt);
 NSNumber *pi = @(piFloat);
-NSNumber *isYes = @(isYes);
+NSNumber *isYes = @(isYesBOOL);
 
 NSLog(@"%@, %@, %@, %@", negSeven, eight, pi, isYes);
 ```
