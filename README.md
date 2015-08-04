@@ -122,7 +122,9 @@ NSNumber *isYes = @YES;
 NSNumber *isNo = @NO;
 ```
 
-But, there *are* two cases in which you'll need to use the full literal syntax: (1.) converting an existing variable, and (2.) converting the result of an operation.
+Woah! We just put a `BOOL` into a `NSNumber`. How is that possible? Why would we want to do that? The latter question is easy to answer. `BOOL` is a primitive, which means we can't store it in an `NSArray`. Thankfully, the `BOOL` type is actually just an `NSInteger`. `YES` is `1`, and `NO` is `0`. So `@YES` is the same as saying `@1` and `@NO` is the same as saying `@0`. This will be helpful when you want to store `BOOL` variables in `NSArray`s in the future.
+
+There *are* two cases in which you'll need to use the full literal syntax: (1.) converting an existing variable, and (2.) converting the result of an operation.
 
 #### Converting A Variable
 
