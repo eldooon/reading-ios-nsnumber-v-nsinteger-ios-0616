@@ -1,114 +1,21 @@
-# Primitives & NSNumber
+# `NSNumber`
 
 ## Objectives
 
-1. Get introduced to the difference between primitives and objects, and which requires a `*` in declarations.
-2. Learn the four most common primitive data types and what distinguishes them.
-3. Know when to employ `NSNumber` for holding values and what distinguishes it from primitives.
+1. Use `NSNumber` to provide an object "wrapper" for primitive values so they can be stored in a collection.
+2. Use the `NSNumber` literal `@()` to store values, variables, and the results of operations.
+3. Convert `NSNumber` object to primitive values and strings.
 4. Review common error messages when working with `NSNumber`.
-
-## Primitives
-
-You may have noticed in previous examples that `NSString` variables are declared with a `*` ("star" or "asterisk") while `NSInteger` variables are declared without one. This is because `NSString` is an object type (we'll cover in depth what this means in the next topic). Objects require a pointer reference (the `*`) in their declaration because, well, they point to a set of values at a specific memory address in the computer's RAM. However, `NSInteger` is a primitive, or "data type", and is itself a value, rather than a pointer to a value or set of values.
-
-**Note:** *Entering* `NSInteger *` *will cause the compiler to generate an* `invalid integer to pointer conversion` *warning. The same goes for declaring any of the data types. This syntax does serve a purpose so the language permits it, but your application won't do what you expect.*
-
-The primitives with which you'll interact the most are:
-
-```objc
-NSInteger
-NSUInteger
-CGFloat
-BOOL
-```
-A great reference on the more complete list of primitives can be found in the documentation on Apple's [Foundation Data Types](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_DataTypes/index.html#//apple_ref/doc/c_ref/NSTimeInterval).
-
-### `NSInteger`—neither `int` nor `long`
-
-These Objective-C types get treated at run time as either 32-bit or 64-bit C data types depending on the current device. This is important because the first mobile CPU to run a true 64-bit architecture in a smartphone is the [A7 chip](http://en.wikipedia.org/wiki/Apple_A7) in the iPhone 5S and iPad Mini 3, first released in September 2013.
-
-| Data Type  | Description             | 64-bit            |
-|:----------:|:------------------------|:------------------|
-|`NSInteger` | `int` (32-bit)          | `long` (64-bit)   |
-|`NSUInteger`| `unsigned int` (32-bit) | `unsigned long` (64-bit) |
-|`CGFloat`   | `float` (32-bit)        | `double` (64-bit) |
-|`BOOL`      | smallest possible unit: | YES = 1, NO = 0 |
-
-### Signed vs. Unsigned Integers
-
-You've probably been wondering what this distinction between signed and unsigned integers means. The most basic explanation is that signed integers can handle values less than zero (negative numbers), while unsigned integers can only be positive. The way signed integers accomplish this is by taking the top half of their available range and using it to count down from -1.
-
-For numbers less than about two billion (2 147 483 647) in Objective-C, incorrectly casting integers to the wrong sign won't cause any problems, but it's good practice to be aware of the distinction. Generally, signed integers should only be used when a value can be below zero, such as a coordinate.
-
-**Advanced:** *Signed integers use their first bit as a* `+` *or* `-` *flag. So on the lower half of the number range, signed and unsigned will convert to the same value. However, an unsigned integer in the top half of the range, if read improperly as a signed integer, will return a negative value. [Further Reading](http://en.wikipedia.org/wiki/Integer_(computer_science))*
-
-### Floating Point Values
-
-In programming, **floating point** values are used to represent decimal values. Objective-C handles floating points with `CGFloat`. If you were to try setting an `NSInteger` to a decimal value, you will lose all of the information following the decimal point.
-
-```objc
-NSInteger piInt = 3.14159265359;
-NSLog(@"%li", piInt);
-```
-This will print: `3`.
-
-However, using `CGFloat` to store the value of *pi* will retain the decimal value:
-
-```objc
-CGFloat pi = 3.14159265359;
-NSLog(@"%f", pi);
-```
-This will print: `3.141593`.
-
-Notice how it only printed to six decimal places? This has to do with the default setting of the `%f` format specifier, and doesn't reflect the precision of the `CGFloat` value itself. We can override the default length using `%.nf` where `n` is the number of decimal points we wish to see.
-
-```objc
-CGFloat pi = 3.14159265359;
-NSLog(@"%.12f", pi);
-```
-This will print: `3.141592653590` since we only set *pi* to the eleventh decimal point.
-
-#### Floating Point Arithmetic
-
-It's important to know that integer values **do not** automatically become floating point values even if you declare the result of a fraction like this:
-
-```objc
-CGFloat elevenNinths = 11/9;
-NSLog(@"%f", elevenNinths);
-```
-This will print: `1.000000`.
-
-But why did it not print `1.222222`? Well, that's because dividing (`/`) integer values can only result in another integer. However, if any part of an arithmetic operation involves a floating point value, the result will evaluate to a floating point value as well.
-
-```objc
-CGFloat elevenNinths = 11/9.0; // or 11.0/9.0 or 11.0/9
-NSLog(@"%f", elevenNinths);
-```
-This will print: `1.222222`, just like we wanted.
-
-### Booleans
-
-A **Boolean** (typed `BOOL` in Objective-C) is a true or false (`YES` or `NO`) value. They are most useful in conditional (`if`) statements which we'll cover in the next reading.
-
-You can set a `BOOL` value like this:
-
-```objc
-BOOL isYes = YES; // bit value 1, or anything non-zero, or non-"nil"
-BOOL isNo = NO; // bit value 0, exactly zero, or "nil"
-
-NSLog(@"yes = %d, no = %d", isYes, isNo);
-```
-This will print: `yes = 1, no = 0`.
-
-**Top Tip:** *The C language type is* `bool` *(all-lowercase). Use* `BOOL` *(all uppercase) when programming in Objective-C.*
+5. Use `isEqualToNumber:` to compare `NSNumber` objects directly.
+6. Convert an `NSNumber` to its primitive value in order to use a comparison operator.
 
 ## NSNumber
 
-Since Objective-C primitives are **not** objects there are certain things that can't be done with them. Namely, storing them in collections like arrays and dictionaries (the compiler will complain if you try this).
+Since Objective-C primitives are **not** objects they cannot be stored in collections such as an array. In fact, the compiler will complain if you even try. 
 
-The purpose of `NSNumber` is to provide a way to store primitives as objects. It is an object-type "wrapper" that bundles the primitive data so it can be placed into a collection. The drawback, however, is that a primitive stored in an `NSNumber` cannot be directly modified, and information about the original type of primitive type is lost once it's converted.
+The primary purpose of `NSNumber` is to provide a way to store primitives as objects. It is an object-type "wrapper" that bundles the primitive data so it can be placed into a collection. The drawback, however, is that a primitive stored in an `NSNumber` cannot be directly modified, and information about the original type of primitive type can be lost once it's converted.
 
-For this reason, it's best to only use `NSNumber` for storing primitives in collections.
+For this reason, **it's best to only use `NSNumber` for storing primitives in collections.**
 
 ### The `NSNumber` Literal
 
@@ -118,11 +25,15 @@ The literal syntax for defining an `NSNumber` is `@()`. However, when an `NSNumb
 NSNumber *negSeven = @-7;
 NSNumber *eight = @8;
 NSNumber *pi = @3.14159265359;
+```
+
+The boolean values `YES` and `NO` can also be converted to `NSNumber`:
+
+```objc
 NSNumber *isYes = @YES;
 NSNumber *isNo = @NO;
 ```
-
-Woah! We just put a `BOOL` into a `NSNumber`. How is that possible? Why would we want to do that? The latter question is easy to answer. `BOOL` is a primitive, which means we can't store it in an `NSArray`. Thankfully, the `BOOL` type is actually just an `NSInteger`. `YES` is `1`, and `NO` is `0`. So `@YES` is the same as saying `@1` and `@NO` is the same as saying `@0`. This will be helpful when you want to store `BOOL` variables in `NSArray`s in the future.
+This is possible because `BOOL` is actually just another *typedef* like `NSInteger` and `NSUInteger` (`CGFloat`, however, is a little bit more complex). A "typedef" is a way of reading a binary word; it acts a kind of alias. What this means is that the boolean value `YES` is actually just another way of reading a `1`, and the boolean value `NO` is another way of reading a `0`. So to `NSNumber`, `@YES` is the same as saying `@1`, and `@NO` is the same as saying `@0`. When writing code, however, it is useful to use the boolean values as a signal to yourself and to other developers that the `NSNumber`'s value is meant to contain a boolean.
 
 There *are* two cases in which you'll need to use the full literal syntax: (1.) converting an existing variable, and (2.) converting the result of an operation.
 
@@ -149,10 +60,11 @@ This will print: `-7, 8, 3.1419265359, 1`.
 
 Other than the initializer methods which are generally handled by the literal syntax, the methods on `NSNumber` are primarily conversion methods. The most common ones that you'll use are:
 
-* `integerValue` - converts to an `NSInteger`
-* `floatValue` - converts to a `CGFloat`
-* `boolValue` - converts to a `BOOL`
-* `stringValue` - converts to an `NSString`
+* `integerValue` — converts to an `NSInteger` value
+* `unsignedIntegerValue` — converts to an `NSUInteger` value
+* `floatValue` — converts to a `CGFloat` value
+* `boolValue` — converts to a `BOOL` value
+* `stringValue` — converts to an `NSString` object.
 
 We can use the conversion methods to transform our `NSNumber` objects back to primitives that can be manipulated:
 
@@ -172,7 +84,7 @@ As we mentioned above, an `NSNumber` can't participate directly in a mathematica
 
 ```objc
 NSNumber *sum = @(1 + 1);
-NSNumber *product = @(piFloat + 1);
+NSNumber *product = @(piFloat * 2);
 NSNumber *difference = @(eightUInt - negSevenInt);
 NSNumber *quotient = @(1.618 / piFloat);
 ```
@@ -194,14 +106,10 @@ NSNumber *sum = @2 + @3;
 NSNumber *sum = 2 + @3; 
 // Semantic Issue: Arithmetic on pointer to interface 'NSNumber', which is not a constant size for this architecture and platform
 ```
-3) When attempting to insert primitives into a collection, such as an array or a dictionary:
+3) When attempting to insert primitives into a collection, such as an array:
 
 ```objc
-NSArray *numbers = @[2, 3]; 
-// Semantic Issue: Numeric literal must be prefixed by '@' in a collection
-```
-```objc
-NSDictionary *numbers = @{@2: 3}; 
+NSArray *primes = @[1, 2, 3, 5, 7, 11, 13]; 
 // Semantic Issue: Numeric literal must be prefixed by '@' in a collection
 ```
 
@@ -220,35 +128,30 @@ if ([eight isEqualToNumber:@8]) {
 ```
 This will print: `8 is equal to 8`.
 
-## Extra! Extra!
-
-If you have time, review this oddity that's possible in Objective-C due to the pecularity of primitives and the `NSNumber` wrapper. But don't stress over it if you don't quite understand it—it's only here as a curiosity.
-
-### Unsigning the Negative Sign
-
-Let's see what happens when we incorrectly capture a negative signed integer conversion into an unsigned integer variable and then read it:
+To use a comparison operator, the `NSNumber` must first be converted to a primitive. This can be done using a variable in an intermediate step, or by directly evaluated the return of the appropriate conversion method:
 
 ```objc
-NSInteger negOne = -1;
-NSNumber *negOneNum = @(negOne);
-NSUInteger negOneUInt = [negOneNum integerValue];
-    
-NSLog(@"%lu", negOneUInt);
+// intermediate variable
+
+NSNumber *fortyTwo = @42;
+NSInteger fortyTwoInt = [fortyTwo integerValue];
+
+if (fortyTwoInt > 40) {
+    NSLog(@"fortyTwo is greater than 40");
+} else {
+    NSLog(@"fortyTwo is not greater than 40");
+}
 ```
-
-This prints: `18 446 744 073 709 551 615` (without spaces). 
-
-That's the 64-bit decimal value of `-1`. We get the same problem if  we call `NSNumber`'s `unsignedIntegerValue` method instead, even if we capture the return with an `NSInteger`.
 
 ```objc
-NSInteger negOne = -1;
-NSNumber *negOneNum = @(negOne);
-NSInteger negOneInt = [negOneNum unsignedIntegerValue];
-    
-NSLog(@"%lu", negOneInt);
+// direct evaluation of conversion method
+
+NSNumber *fortyTwo = @42;
+
+if ([fortyTwo integerValue] > 40) {
+    NSLog(@"fortyTwo is greater than 40");
+} else {
+    NSLog(@"fortyTwo is not greater than 40");
+}
 ```
-This also prints: `18 446 744 073 709 551 615` (without spaces). 
-
-Mix-ups like this are pretty rare, but if you see a value at run time in the 18-quintillion range, it's probably just the result of a sign conversion error.
-
-
+Both of these will print: `fortyTwo is greater than 40`.
