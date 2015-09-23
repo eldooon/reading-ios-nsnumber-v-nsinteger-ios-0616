@@ -33,7 +33,7 @@ The boolean values `YES` and `NO` can also be converted to `NSNumber`:
 NSNumber *isYes = @YES;
 NSNumber *isNo = @NO;
 ```
-This is possible because `BOOL` is actually just another *typedef* like `NSInteger` and `NSUInteger` (`CGFloat`, however, is a little bit more complex). So the boolean value `YES` is actually just an alias for `1`, and the boolean value `NO` is just an alias for `0`. So to `NSNumber`, `@YES` is the same as saying `@1`, and `@NO` is the same as saying `@0`. When writing code, however, it is useful to use the boolean values as a signal to yourself and to other developers that the `NSNumber`'s value is meant to contain a boolean.
+This is possible because `BOOL` is actually just another *typedef* like `NSInteger` and `NSUInteger` (`CGFloat`, however, is a little bit more complex). A "typedef" is a way of reading a binary word; it acts a kind of alias. What this means is that the boolean value `YES` is actually just another way of reading a `1`, and the boolean value `NO` is another way of reading a `0`. So to `NSNumber`, `@YES` is the same as saying `@1`, and `@NO` is the same as saying `@0`. When writing code, however, it is useful to use the boolean values as a signal to yourself and to other developers that the `NSNumber`'s value is meant to contain a boolean.
 
 There *are* two cases in which you'll need to use the full literal syntax: (1.) converting an existing variable, and (2.) converting the result of an operation.
 
