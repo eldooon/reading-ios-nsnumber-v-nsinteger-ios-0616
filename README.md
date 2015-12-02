@@ -155,3 +155,4 @@ if ([fortyTwo integerValue] > 40) {
 }
 ```
 Both of these will print: `fortyTwo is greater than 40`.
+<a href='https://learn.co/lessons/reading-ios-nsnumber-v-nsinteger' data-visibility='hidden'>View this lesson on Learn.co</a>
